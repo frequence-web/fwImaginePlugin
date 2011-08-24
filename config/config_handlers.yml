@@ -1,0 +1,2 @@
+config/fw_imagine.yml:
+  class:    fwImagineConfigHandler

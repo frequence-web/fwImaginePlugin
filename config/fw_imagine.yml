@@ -1,0 +1,4 @@
+all:
+  adapter: gd
+  cache_prefix: media/cache
+  filters: []

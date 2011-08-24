@@ -1,0 +1,3 @@
+all:
+  namespaces:
+    Imagine: '<?php echo sfConfig::get('sf_lib_dir') ?>/vendor/imagine/lib'
