@@ -10,8 +10,9 @@ class fwFilterManager
 
   public function __construct(sfEventDispatcher $dispatcher, array $filters = array())
   {
-    $this->loaders = array();
+    $this->filters = $filters;
     $this->dispatcher = $dispatcher;
+    $this->getLoaders();
   }
 
   public function get($filter)

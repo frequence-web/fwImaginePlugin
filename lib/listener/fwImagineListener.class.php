@@ -8,6 +8,11 @@ class fwImagineListener
   protected $imagine;
 
   /**
+   * @var fwFilterManager
+   */
+  protected $filterManager;
+
+  /**
    * @var sfConfigCache
    */
   protected $configCache;
@@ -17,11 +22,21 @@ class fwImagineListener
    */
   protected $config;
 
+  /**
+   * @var sfEventDispatcher
+   */
+  protected $dispatcher;
+
   protected static $adapters = array(
     'gd'      => 'Imagine\\Gd\\Imagine',
     'Imagick' => 'Imagine\\Imagick\\Imagine',
     'Gmagick' => 'Imagine\\Gmagick\\Imagine',
   );
+
+  public function __construct(sfEventDispatcher $dispatcher)
+  {
+    $this->dispatcher = $dispatcher;
+  }
 
   public function listenToMethodNotFound(sfEvent $event)
   {
@@ -29,6 +44,11 @@ class fwImagineListener
     {
       $event->setProcessed(true);
       $event->setReturnValue($this->getImagine());
+    }
+    else if ($event['method'] == 'getImagineFilterManager')
+    {
+      $event->setProcessed(true);
+      $event->setReturnValue($this->getImagineFilterManager());
     }
   }
 
@@ -39,7 +59,7 @@ class fwImagineListener
 
   public function listenToGetLoaders(sfEvent $event)
   {
-    $event->getSubject()->addLoader(new fwImagineThumbnailLoader);
+    $event->getSubject()->addLoader('thumbnail', new fwImagineThumbnailLoader);
   }
 
   /**
@@ -50,11 +70,26 @@ class fwImagineListener
     return null !== $this->imagine ? $this->imagine : $this->loadImagine();
   }
 
+  /**
+   * @return Imagine\Image\ImagineInterface
+   */
+  public function getImagineFilterManager()
+  {
+    if (null === $this->filterManager)
+    {
+      $this->loadImagine();
+    }
+
+    return $this->filterManager;
+  }
+
   protected function loadImagine()
   {
     $this->config = include $this->configCache->checkConfig('config/fw_imagine.yml');
 
     $this->imagine = new self::$adapters[$this->config['adapter']];
+
+    $this->filterManager = new fwFilterManager($this->dispatcher, $this->config['filters']);
 
     return $this->imagine;
   }

@@ -1,0 +1,6 @@
+fw_imagine_filter_thumbnail:
+  url: /_imagine_thumbnail/:path
+  param:
+    module: fwImagine
+    action: filter
+    filter: list_thumbnail
