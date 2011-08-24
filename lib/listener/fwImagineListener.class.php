@@ -37,6 +37,14 @@ class fwImagineListener
     $this->configCache = $event->getSubject()->getConfigCache();
   }
 
+  public function listenToGetLoaders(sfEvent $event)
+  {
+    $event->getSubject()->addLoader(new fwImagineThumbnailLoader);
+  }
+
+  /**
+   * @return Imagine\Image\ImagineInterface
+   */
   public function getImagine()
   {
     return null !== $this->imagine ? $this->imagine : $this->loadImagine();
