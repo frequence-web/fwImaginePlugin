@@ -12,11 +12,12 @@ class fwImagineActions extends sfActions
     {
       $this->getContext()->getImagineFilterManager()->get($filter)
                          ->apply($this->getContext()->getImagine()->open($path))
-                         ->save($destPath, array('quality' => 100));
+                         ->save($destPath, array('quality' => 100, 'format' => 'png'));
 
-      $this->getResponse()->setContentType('image/jpg');
+      $this->getResponse()->setContentType('image/png');
+      $this->getResponse()->setContent(file_get_contents($destPath));
 
-      return $this->renderText(file_get_contents($destPath));
+      return sfView::NONE;
     }
     catch (Exception $e)
     {

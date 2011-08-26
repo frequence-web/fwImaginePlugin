@@ -47,4 +47,9 @@ class fwFilterManager
     $event = new sfEvent($this, 'fw_imagine.get_loaders');
     $this->dispatcher->notify($event);
   }
+
+  public function getFilters()
+  {
+    return $this->filters;
+  }
 }

@@ -62,6 +62,17 @@ class fwImagineListener
     $event->getSubject()->addLoader('thumbnail', new fwImagineThumbnailLoader);
   }
 
+  public function listenToRoutingLoadConfiguration(sfEvent $event)
+  {
+    /** @var $routing sfPatternRouting */
+    $routing = $event->getSubject();
+
+    $routing->prependRoute('_imagine_filter', new sfRoute(
+      '/_imagine/filter/:filter/:path',
+      array('module' => 'fwImagine', 'action' => 'filter')
+    ));
+  }
+
   /**
    * @return Imagine\Image\ImagineInterface
    */
