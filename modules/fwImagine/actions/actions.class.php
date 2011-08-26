@@ -5,15 +5,24 @@ class fwImagineActions extends sfActions
   public function executeFilter(sfWebRequest $request)
   {
     $filter = $request->getParameter('filter');
-    $path = sfConfig::get('sf_test_dir').'/data/image-file.jpg';
-    $destPath = sfConfig::get('sf_upload_dir').'/image-file.jpg';
+    $path = sfConfig::get('sf_web_dir').'/'.$request->getParameter('path');
+    $destPath = sfConfig::get('sf_web_dir').'/media/cache'.$request->getParameter('path');
 
     try
     {
-      $this->getContext()->getImagineFilterManager()->get($filter)
-                         ->apply($this->getContext()->getImagine()->open($path))
-                         ->save($destPath, array('quality' => 100, 'format' => 'png'));
+      if (!is_file($destPath))
+      {
+        $destDir = dirname($destPath);
+        if (!is_dir($destDir))
+        {
+          mkdir($destDir, 0777, true);
+        }
 
+        $this->getContext()->getImagineFilterManager()->get($filter)
+                           ->apply($this->getContext()->getImagine()->open($path))
+                           ->save($destPath, array('quality' => 100, 'format' => 'png'));
+      }
+      
       $this->getResponse()->setContentType('image/png');
       $this->getResponse()->setContent(file_get_contents($destPath));
 

@@ -69,7 +69,9 @@ class fwImagineListener
 
     $routing->prependRoute('_imagine_filter', new sfRoute(
       '/_imagine/filter/:filter/:path',
-      array('module' => 'fwImagine', 'action' => 'filter')
+      array('module' => 'fwImagine', 'action' => 'filter'),
+      array('path' => '.+'),
+      array('segment_separators' => array('/'))
     ));
   }
 
