@@ -24,6 +24,7 @@ class fwImagineActions extends sfActions
       }
       
       $this->getResponse()->setContentType('image/png');
+      $this->getResponse()->addCacheControlHttpHeader('max_age=31536000');
       $this->getResponse()->setContent(file_get_contents($destPath));
 
       return sfView::NONE;
