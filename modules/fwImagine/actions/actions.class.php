@@ -9,12 +9,21 @@ class fwImagineActions extends sfActions
 
     // Resolve paths
     $path = sfConfig::get('sf_web_dir').'/'.$request->getParameter('path');
-    $destPath = sfConfig::get('sf_web_dir').'/media/cache/'.$filters.'/'.$request->getParameter('path');
+    $destPath = sprintf(
+      '%s/%s/%s/%s',
+      sfConfig::get('sf_web_dir'),
+      sfConfig::get('fw_imagine_cache_prefix', 'media/cache'),
+      $filters,
+      $path
+    );
 
     // Set image header
     // TODO : make it configurable
     $this->getResponse()->setContentType('image/png');
-    $this->getResponse()->addCacheControlHttpHeader('max_age=31536000');
+    if (sfConfig::get('fw_imagine_http_cache_enabled', true))
+    {
+      $this->getResponse()->addCacheControlHttpHeader('max_age='.sfConfig::get('fw_imagine_http_cache_lifetime', 3600));
+    }
 
     // If the file doesn't exists
     if (!is_file($destPath))

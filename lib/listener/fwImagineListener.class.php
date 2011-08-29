@@ -36,6 +36,11 @@ class fwImagineListener
   public function __construct(sfEventDispatcher $dispatcher)
   {
     $this->dispatcher = $dispatcher;
+    $this->dispatcher->connect('context.method_not_found', array($this, 'listenToMethodNotFound'));
+    $this->dispatcher->connect('view.method_not_found', array($this, 'listenToMethodNotFound'));
+    $this->dispatcher->connect('context.load_factories', array($this, 'listenToContextLoadFactories'));
+    $this->dispatcher->connect('fw_imagine.get_loaders', array($this, 'listenToGetLoaders'));
+    $this->dispatcher->connect('routing.load_configuration', array($this, 'listenToRoutingLoadConfiguration'));
   }
 
   public function listenToMethodNotFound(sfEvent $event)
@@ -99,11 +104,17 @@ class fwImagineListener
 
   protected function loadImagine()
   {
-    $this->config = include $this->configCache->checkConfig('config/fw_imagine.yml');
+    $this->config = $config = include $this->configCache->checkConfig('config/fw_imagine.yml');
 
-    $this->imagine = new self::$adapters[$this->config['adapter']];
+    $this->imagine = new self::$adapters[$config['adapter']];
 
-    $this->filterManager = new fwFilterManager($this->dispatcher, $this->config['filters']);
+    $this->filterManager = new fwFilterManager($this->dispatcher, $config['filters']);
+
+    unset($config['filters']);
+    sfConfig::add(array_combine(
+      array_map(function($key) { return 'fw_imagine_'.$key; }, array_keys($config)),
+      array_values($config)
+    ));
 
     return $this->imagine;
   }
