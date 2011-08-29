@@ -61,6 +61,9 @@ Create a fw_imagine.yml file inside config/ or apps/*/config/ dir and define you
         list_thumbnail:
           type: thumbnail
           options: { size: [120, 90], method: inset }
+        rotate90:
+          type: rotate
+          options: { angle: 90, color: 'FFFFFF', alpha: 0 }
 
 ### Use your filters
 
@@ -75,6 +78,10 @@ You can now use your filters into your templates
 
     <?php use_helper('imagine'); ?>
     <?php $path = imagine_filter('/web/path/to/image', 'list_thumbnail'); ?>
+
+#### Available filter types
+
+    thumbnail, rotate
 
 Extra usage
 -----------
@@ -113,8 +120,6 @@ Extra usage
 TODO
 ----
 
- * Other filter types (only thumbnail available for the moment)
- * Chainable filters
  * Implement Http Cache configuration
  * Refactor plugin config
  * Unit tests
