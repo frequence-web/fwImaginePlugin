@@ -1,11 +1,13 @@
 <?php
 
-function imagine_filter($path, $filter)
+function imagine_filter($path, $filters)
 {
+  $filters = join(',', (array)$filters);
+  
   return str_replace(
     urlencode(ltrim($path, '/')),
     urldecode(ltrim($path, '/')),
-    url_for('_imagine_filter', array('path' => ltrim($path, '/'), 'filter' => $filter))
+    url_for('_imagine_filter', array('path' => ltrim($path, '/'), 'filters' => $filters))
   );
 }
 
