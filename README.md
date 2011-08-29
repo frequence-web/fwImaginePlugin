@@ -120,7 +120,5 @@ Extra usage
 TODO
 ----
 
- * Implement Http Cache configuration
- * Refactor plugin config
  * Unit tests
  * Functional tests
