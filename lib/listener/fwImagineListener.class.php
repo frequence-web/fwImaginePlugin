@@ -60,6 +60,7 @@ class fwImagineListener
   public function listenToGetLoaders(sfEvent $event)
   {
     $event->getSubject()->addLoader('thumbnail', new fwImagineThumbnailLoader);
+    $event->getSubject()->addLoader('rotate', new fwImagineRotateLoader);
   }
 
   public function listenToRoutingLoadConfiguration(sfEvent $event)
@@ -68,7 +69,7 @@ class fwImagineListener
     $routing = $event->getSubject();
 
     $routing->prependRoute('_imagine_filter', new sfRoute(
-      '/_imagine/filter/:filter/:path',
+      '/_imagine/filter/:filters/:path',
       array('module' => 'fwImagine', 'action' => 'filter'),
       array('path' => '.+'),
       array('segment_separators' => array('/'))
