@@ -13,7 +13,7 @@ The stable version will be available by the symfony plugin manager.
 Dependencies
 ------------
 
-This plugin is designed to works with the fwClassLoaderPlugin, see https://github.com/frequence-wen/fwClassLoaderPlugin
+This plugin is designed to works with the fwClassLoaderPlugin, see https://github.com/frequence-web/fwClassLoaderPlugin
 
 You can use fwImaginePlugin without the fwClassLoaderPlugin, but you need to implement an way to autoload Imagine classes (namespaced php5.3 classes)
 
@@ -22,7 +22,7 @@ Installation
 
 ### Install imagine
 
-  git clone https://github.com/avalanche123/Imagine.git lib/vendor/imagine
+    git clone https://github.com/avalanche123/Imagine.git lib/vendor/imagine
 
 or
 
@@ -30,23 +30,23 @@ or
 
 ### Install the plugin
 
-  git clone https://github.com/frequence-web/fwImaginePlugin.git plugins/fwImaginePlugin
+    git clone https://github.com/frequence-web/fwImaginePlugin.git plugins/fwImaginePlugin
 
 or
 
-  git submodule add https://github.com/frequence-web/fwImaginePlugin.git plugins/fwImaginePlugin
+    git submodule add https://github.com/frequence-web/fwImaginePlugin.git plugins/fwImaginePlugin
 
 Edit your config/ProjectConfiguration.class.php file and add this line in the setup method
 
-  $this->enablePlugins('fwImaginePlugin');
+    $this->enablePlugins('fwImaginePlugin');
 
 ### Install the Symfony2 ClassLoader component and the fwClassLoaderPlugin (Optional if you use your own autoload)
 
-  ./symfony plugin:install fwClassLoader
+    ./symfony plugin:install fwClassLoader
 
 Edit your config/ProjectConfiguration.class.php file and add this line in the setup method
 
-  $this->enablePlugins('fwClassLoaderPlugin');
+    $this->enablePlugins('fwClassLoaderPlugin');
 
 Usage
 -----
@@ -55,11 +55,11 @@ Usage
 
 Create a fw_imagine.yml file inside config/ or apps/*/config/ dir and define your filters :
 
-  all:
-    filters:
-      list_thumbnail:
-        type: thumbnail
-        options: { size: [120, 90], method: inset }
+    all:
+      filters:
+        list_thumbnail:
+          type: thumbnail
+          options: { size: [120, 90], method: inset }
 
 ### Use your filters
 
@@ -67,13 +67,13 @@ You can now use your filters into your templates
 
 #### Display a filtered image
 
-  <?php use_helper('imagine'); ?>
-  <?php echo imagine_image('/web/path/to/image', 'list_thumbnail') ?>
+    <?php use_helper('imagine'); ?>
+    <?php echo imagine_image('/web/path/to/image', 'list_thumbnail') ?>
 
 #### Get a filtered image path
 
-  <?php use_helper('imagine'); ?>
-  <?php $path = imagine_filter('/web/path/to/image', 'list_thumbnail'); ?>
+    <?php use_helper('imagine'); ?>
+    <?php $path = imagine_filter('/web/path/to/image', 'list_thumbnail'); ?>
 
 Extra usage
 -----------
@@ -82,31 +82,31 @@ Extra usage
 
 #### Create a filter loader
 
-  <?php
+    <?php
 
-  use Imagine\Image\Box;
-  use Imagine\Image\ManipulatorInterface;
-  use Imagine\Filter\Basic\Thumbnail;
+    use Imagine\Image\Box;
+    use Imagine\Image\ManipulatorInterface;
+    use Imagine\Filter\Basic\Thumbnail;
 
-  class fwImagineThumbnailLoader implements fwImagineLoader
-  {
-    public function load(array $options)
+    class fwImagineThumbnailLoader implements fwImagineLoader
     {
-      $mode = $options['mode'] === 'inset' ?
-        ManipulatorInterface::THUMBNAIL_INSET :
-        ManipulatorInterface::THUMBNAIL_OUTBOUND;
+      public function load(array $options)
+      {
+        $mode = $options['mode'] === 'inset' ?
+          ManipulatorInterface::THUMBNAIL_INSET :
+          ManipulatorInterface::THUMBNAIL_OUTBOUND;
 
-      list($width, $height) = $options['size'];
+        list($width, $height) = $options['size'];
 
-      return new Thumbnail(new Box($width, $height), $mode);
+        return new Thumbnail(new Box($width, $height), $mode);
+      }
     }
-  }
 
 #### Listen the 'fw_imagine.get_loaders' event yo add the loader to the loaderManager
 
-  $this->dispatcher->connect('fw_imagine.get_loaders', function(sfEvent $event) {
-    $event->getSubject()->addLoader(new fwImagineThumbnailLoader());
-  });
+    $this->dispatcher->connect('fw_imagine.get_loaders', function(sfEvent $event) {
+      $event->getSubject()->addLoader(new fwImagineThumbnailLoader());
+    });
   
 
 TODO
