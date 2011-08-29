@@ -26,7 +26,7 @@ Installation
 
 or
 
-  git submodule add https://github.com/avalanche123/Imagine.git lib/vendor/imagine
+    git submodule add https://github.com/avalanche123/Imagine.git lib/vendor/imagine
 
 ### Install the plugin
 
@@ -42,6 +42,7 @@ Edit your config/ProjectConfiguration.class.php file and add this line in the se
 
 ### Install the Symfony2 ClassLoader component and the fwClassLoaderPlugin (Optional if you use your own autoload)
 
+    git clone https://github.com/symfony/ClassLoader.git lib/vendor/symfony2/src/Symfony/ClassLoader
     ./symfony plugin:install fwClassLoader
 
 Edit your config/ProjectConfiguration.class.php file and add this line in the setup method
