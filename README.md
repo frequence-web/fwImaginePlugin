@@ -60,7 +60,7 @@ Create a fw_imagine.yml file inside config/ or apps/*/config/ dir and define you
       filters:
         list_thumbnail:
           type: thumbnail
-          options: { size: [120, 90], method: inset }
+          options: { size: [120, 90], mode: inset }
         rotate90:
           type: rotate
           options: { angle: 90, color: 'FFFFFF', alpha: 0 }
