@@ -49,6 +49,17 @@ Edit your config/ProjectConfiguration.class.php file and add this line in the se
 
     $this->enablePlugins('fwClassLoaderPlugin');
 
+### Enable the fwImagine module
+
+Edit your settings.yml file and add the fwImagine module
+
+'''
+all:
+  settings:
+    ...
+    enabled_modules:        [fwImagine]
+'''
+
 Usage
 -----
 
