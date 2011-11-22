@@ -8,7 +8,8 @@ class fwImagineActions extends sfActions
     $filters = $request->getParameter('filters');
 
     // Resolve paths
-    $path = sfConfig::get('sf_web_dir').'/'.$request->getParameter('path');
+    $path = $request->getParameter('path');
+
     $destPath = sprintf(
       '%s/%s/%s/%s',
       sfConfig::get('sf_web_dir'),
@@ -24,7 +25,6 @@ class fwImagineActions extends sfActions
     {
       $this->getResponse()->addCacheControlHttpHeader('max_age='.sfConfig::get('fw_imagine_http_cache_lifetime', 3600));
     }
-
     // If the file doesn't exists
     if (!is_file($destPath))
     {
