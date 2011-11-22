@@ -53,12 +53,12 @@ Edit your config/ProjectConfiguration.class.php file and add this line in the se
 
 Edit your settings.yml file and add the fwImagine module
 
-'''
+``` yaml
 all:
   settings:
     ...
     enabled_modules:        [fwImagine]
-'''
+```
 
 Usage
 -----
