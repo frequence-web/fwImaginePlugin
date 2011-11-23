@@ -13,5 +13,5 @@ function imagine_filter($path, $filters, $absolute = false)
 
 function imagine_image($source, $filter, $options = array())
 {
-  return image_tag(imagine_filter($source, $filter, $options));
+  return image_tag(imagine_filter($source, $filter), $options);
 }
