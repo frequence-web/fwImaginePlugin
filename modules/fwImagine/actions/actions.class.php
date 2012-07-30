@@ -23,7 +23,7 @@ class fwImagineActions extends sfActions
     $this->getResponse()->setContentType('image/png');
     if (sfConfig::get('fw_imagine_http_cache_enabled', true))
     {
-      $this->getResponse()->addCacheControlHttpHeader('max_age='.sfConfig::get('fw_imagine_http_cache_lifetime', 3600));
+      $this->getResponse()->addCacheControlHttpHeader('public;max_age='.sfConfig::get('fw_imagine_http_cache_lifetime', 3600 * 24 * 365));
     }
     // If the file doesn't exists
     if (!is_file($destPath))
