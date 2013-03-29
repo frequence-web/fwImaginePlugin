@@ -15,7 +15,7 @@ class fwImagineActions extends sfActions
       sfConfig::get('sf_web_dir'),
       sfConfig::get('fw_imagine_cache_prefix', 'media/cache'),
       $filters,
-      $path
+      $request->getParameter('path')
     );
 
     // Set image header
