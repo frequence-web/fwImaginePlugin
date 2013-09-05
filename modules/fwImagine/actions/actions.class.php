@@ -6,6 +6,7 @@ class fwImagineActions extends sfActions
   {
     // Get the filters
     $filters = $request->getParameter('filters');
+    $imagine = $this->getContext()->getImagine();
 
     // Resolve paths
     $path = $request->getParameter('path');
@@ -19,8 +20,8 @@ class fwImagineActions extends sfActions
     );
 
     // Set image header
-    // TODO : make it configurable
-    $this->getResponse()->setContentType('image/png');
+    $format = sfConfig::get('fw_imagine_format', 'png');
+    $this->getResponse()->setContentType('image/'.$format);
     if (sfConfig::get('fw_imagine_http_cache_enabled', true))
     {
       $this->getResponse()->addCacheControlHttpHeader('max-age='.sfConfig::get('fw_imagine_http_cache_lifetime', 3600 * 24 * 365));
@@ -36,7 +37,7 @@ class fwImagineActions extends sfActions
       }
 
       // Open source and apply filters
-      $image = $this->getContext()->getImagine()->open($path);
+      $image = $imagine->open($path);
       foreach (explode(',', $filters) as $filter)
       {
         $image = $this->getContext()->getImagineFilterManager()->get($filter)
@@ -48,13 +49,12 @@ class fwImagineActions extends sfActions
         $destPath,
         array(
           'quality' => sfConfig::get('fw_imagine_quality', 100),
-          'format' => sfConfig::get('fw_imagine_format', 'png')
+          'format'  => $format
         )
       );
-
-      // Just send it
-      $this->getResponse()->setContent(file_get_contents($destPath));
     }
+    // Just send it
+    $this->getResponse()->setContent(file_get_contents($destPath));
 
     return sfView::NONE;
   }
