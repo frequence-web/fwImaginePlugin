@@ -44,13 +44,14 @@ class fwImagineActions extends sfActions
       }
 
       // Save (cache)
-      $image->save($destPath, array('quality' => 100, 'format' => 'png'));
+      $image->save(
+        $destPath,
+        array(
+          'quality' => sfConfig::get('fw_imagine_quality', 100),
+          'format' => sfConfig::get('fw_imagine_format', 'png')
+        )
+      );
 
-      // Send it
-      $this->getResponse()->setContent($image->get('png'));
-    }
-    else
-    {
       // Just send it
       $this->getResponse()->setContent(file_get_contents($destPath));
     }
